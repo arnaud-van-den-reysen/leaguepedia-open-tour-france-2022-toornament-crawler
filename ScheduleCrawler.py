@@ -2,26 +2,33 @@ from pickle import TRUE
 from bs4 import BeautifulSoup
 import requests
 
-TournamentID = "5228116608680255488/stages/5228123532906905600/groups/5228123533913538693/rounds/5376817987973103616/" #SEUL VARIABLE à MODIFIER
-DATE = "2022-01-29" #DATE DU MATCH
+TournamentID = "5301317149362552832/stages/5301538581880315904/groups/5301538582987612293/rounds/5301538582987612361/" #SEUL VARIABLE à MODIFIER
+DATE = "2022-02-26" #DATE DU MATCH
 TIME = "13:00" #HEURE DU MATCH (|timezone=CET |dst=no)
 SCORE = TRUE #FALSE si les scores sont tombés, TRUE si pas de scores
 URL = "https://play.toornament.com/fr/tournaments/"+TournamentID
 
-def getMatchScheduleAndResult(URL):
+def getMatchScheduleAndResult(URL,score):
     response = requests.get(URL)
     soup = BeautifulSoup(response.text, 'html.parser')
     schedule = []
     for i in soup.find_all('div',class_="record"):
         result = []
         for j in i.stripped_strings:
-            result.append(j)  
-        schedule.append(
-            {'team1': result[0],
-            'team1score': result[1],
-            'team2': result[2],
-            'team2score': result[3]}
-        )
+            result.append(j)
+        print(result)
+        if(score):
+            schedule.append(
+                {'team1': result[0],
+                'team2': result[1]}
+            )
+        else:
+            schedule.append(
+                {'team1': result[0],
+                'team1score': result[1],
+                'team2': result[2],
+                'team2score': result[3]}
+            )
     return schedule
 
 def makeFileMatchScheduleAndResult(data,score):
@@ -30,7 +37,7 @@ def makeFileMatchScheduleAndResult(data,score):
     for i in data:
         f.write("{{MatchSchedule|date="+DATE+" |time="+TIME+" |timezone=CET |dst=no\n")
         if (score):
-            f.write("|team1="+i['team1']+" |team2="+i['team2']+'\n')
+            f.write("|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n')
             f.write("|team1score= |team2score= |winner=\n")
         else:
             f.write("|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n')
@@ -50,6 +57,6 @@ def makeFileMatchScheduleAndResult(data,score):
         index+=1
     f.close()
 
-leString = getMatchScheduleAndResult(URL)
+leString = getMatchScheduleAndResult(URL,SCORE)
 print(leString)
 makeFileMatchScheduleAndResult(leString,SCORE)
