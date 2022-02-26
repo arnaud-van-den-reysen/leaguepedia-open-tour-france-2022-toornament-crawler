@@ -1,15 +1,10 @@
 from pickle import TRUE
 from bs4 import BeautifulSoup
 import requests
+from globalVariable import URLROUND,SCORE,TIME,DATE
 
-TournamentID = "5301317149362552832/stages/5301538581880315904/groups/5301538582987612293/rounds/5301538582987612361/" #SEUL VARIABLE à MODIFIER
-DATE = "2022-02-26" #DATE DU MATCH
-TIME = "13:00" #HEURE DU MATCH (|timezone=CET |dst=no)
-SCORE = TRUE #FALSE si les scores sont tombés, TRUE si pas de scores
-URL = "https://play.toornament.com/fr/tournaments/"+TournamentID
-
-def getMatchScheduleAndResult(URL,score):
-    response = requests.get(URL)
+def getMatchScheduleAndResult(url,score):
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     schedule = []
     for i in soup.find_all('div',class_="record"):
@@ -31,11 +26,11 @@ def getMatchScheduleAndResult(URL,score):
             )
     return schedule
 
-def makeFileMatchScheduleAndResult(data,score):
+def makeFileMatchScheduleAndResult(data,score,time,date):
     f = open("schedule.txt","w",encoding="utf-8")
     index = 1
     for i in data:
-        f.write("{{MatchSchedule|date="+DATE+" |time="+TIME+" |timezone=CET |dst=no\n")
+        f.write("{{MatchSchedule|date="+date+" |time="+time+" |timezone=CET |dst=no\n")
         if (score):
             f.write("|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n')
             f.write("|team1score= |team2score= |winner=\n")
@@ -57,6 +52,6 @@ def makeFileMatchScheduleAndResult(data,score):
         index+=1
     f.close()
 
-leString = getMatchScheduleAndResult(URL,SCORE)
+leString = getMatchScheduleAndResult(URLROUND,SCORE)
 print(leString)
-makeFileMatchScheduleAndResult(leString,SCORE)
+makeFileMatchScheduleAndResult(leString,SCORE,TIME,DATE)

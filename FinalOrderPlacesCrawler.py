@@ -1,24 +1,22 @@
 from bs4 import BeautifulSoup
 import requests
+from globalVariable import URLRANKING
 
-TournamentID = "5228116608680255488/stages/5228123532906905600/groups/5228123533913538693/" #SEUL VARIABLE à MODIFIER
-URL = "https://play.toornament.com/fr/tournaments/"+TournamentID
-
-def getNombrePageDeSwissGroup(URL):
-    response = requests.get(URL)
+def getNombrePageDeSwissGroup(url):
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     nombrePageDeParticipant = 0
     for a in soup('a',class_="page"):
         nombrePageDeParticipant+=1
     return nombrePageDeParticipant
 
-def getOrderAndPlaces(URL,nbPage):
+def getOrderAndPlaces(url,nbPage):
     orderAndPlaces = []
     order = []
     places = []
     groupstage = []
     for i in range(1,nbPage+1):
-        response = requests.get(URL+"?page="+str(i))
+        response = requests.get(url+"?page="+str(i))
         soup = BeautifulSoup(response.text, 'html.parser')
         for j in soup.find_all('div',class_="rank large"):
             if j.get_text() != "#":
@@ -69,7 +67,7 @@ def makeFileTournamentResults(data):
         f.write("\n")
     f.close()
 
-leString = getOrderAndPlaces(URL,getNombrePageDeSwissGroup(URL))
+leString = getOrderAndPlaces(URLRANKING,getNombrePageDeSwissGroup(URLRANKING))
 print(leString)
 makeFileOfFinalOrderPlaces(leString)
 makeFileTournamentResults(leString)

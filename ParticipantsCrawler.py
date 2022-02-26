@@ -1,22 +1,20 @@
 import re
 from bs4 import BeautifulSoup
 import requests
+from globalVariable import URLTEAMS
 
-TournamentID = "5228116608680255488" #SEUL VARIABLE à MODIFIER
-URL = "https://play.toornament.com/fr/tournaments/"+TournamentID
-
-def getNombrePageDeParticipant(URL):
-    response = requests.get(URL+"/participants/")
+def getNombrePageDeParticipant(url):
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     nombrePageDeParticipant = 0
     for a in soup('a',class_="page"):
         nombrePageDeParticipant+=1
     return nombrePageDeParticipant
 
-def getAllParticipantLink(URL,nbPage):
+def getAllParticipantLink(url,nbPage):
     linkOfParticipant = []
     for i in range(1,nbPage+1):
-        response = requests.get(URL+"/participants/?page="+str(i))
+        response = requests.get(url+"?page="+str(i))
         soup = BeautifulSoup(response.text, 'html.parser')
         for a in soup('a',href=re.compile("/fr/tournaments/5228116608680255488/participants/.................../")):
             linkOfParticipant.append(a['href'])
@@ -49,6 +47,6 @@ def makeFileOfParticipants(data):
     f.write("{{Box|end}}\n")
     f.close()
 
-leString = getTeamNameAndPlayers(getAllParticipantLink(URL,getNombrePageDeParticipant(URL)))
+leString = getTeamNameAndPlayers(getAllParticipantLink(URLTEAMS,getNombrePageDeParticipant(URLTEAMS)))
 print(leString)
 makeFileOfParticipants(leString)
