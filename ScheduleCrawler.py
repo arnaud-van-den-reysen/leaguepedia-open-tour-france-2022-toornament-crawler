@@ -30,7 +30,7 @@ def makeFileMatchScheduleAndResult(data,score,time,date):
     f = open("schedule.txt","w",encoding="utf-8")
     index = 1
     for i in data:
-        f.write("{{MatchSchedule|date="+date+" |time="+time+" |timezone=CET |dst=no\n")
+        f.write("{{MatchSchedule|date="+date+" |time="+time+" |timezone=CET |dst=spring\n")
         if (score):
             f.write("|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n')
             f.write("|team1score= |team2score= |winner=\n")

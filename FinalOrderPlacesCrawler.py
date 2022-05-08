@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-from globalVariable import URLRANKING
 
 def getNombrePageDeSwissGroup(url):
     response = requests.get(url)
@@ -24,7 +23,7 @@ def getOrderAndPlaces(url,nbPage):
         for j in soup.find_all('div',class_="name weighted"):
             if j.get_text() != "Nom":
                 order.append(j.get_text())
-        for j in soup.find_all('div',class_="history history-6"):
+        for j in soup.find_all('div',class_="history history-6"):#history-<n° de result>
             if j.get_text() != "Historique    ":
                 groupstage.append(j.get_text())
     for i,j,k in zip(order,places,groupstage):
@@ -48,6 +47,18 @@ def makeFileOfFinalOrderPlaces(data):
     f.write("\n")
     f.close()
 
+def getFinalOrderPlacesLeaguepediaFormat(url):
+    leString = getOrderAndPlaces(url,getNombrePageDeSwissGroup(url))
+    txt = "|finalorder="
+    for i in leString:
+        txt = txt + i['order']+','
+    txt = txt + "\n"
+    txt = txt + "|finalplaces="
+    for i in leString:
+        txt = txt + i['places']+','
+    txt = txt + "\n"
+    return txt
+
 def makeFileTournamentResults(data):
     f = open("tournamentResults.txt","w",encoding="utf-8")
     for i in data:
@@ -67,7 +78,21 @@ def makeFileTournamentResults(data):
         f.write("\n")
     f.close()
 
-leString = getOrderAndPlaces(URLRANKING,getNombrePageDeSwissGroup(URLRANKING))
-print(leString)
-makeFileOfFinalOrderPlaces(leString)
-makeFileTournamentResults(leString)
+def getTournamentResultsLeaguepediaFormat(url):
+    leString = getOrderAndPlaces(url,getNombrePageDeSwissGroup(url))
+    txt = ''
+    for i in leString:
+        win = 0
+        lose = 0
+        for j in i['groupstage']:
+            if(j == 'V'):
+                win+=1
+            if(j == 'D'):
+                lose+=1
+            if(j == 'F'):
+                lose+=1
+        i['groupstage'] = str(win)+" - "+str(lose)
+    for i in leString:
+        if(int(i['places']) > 8):
+            txt = txt + '|{{TournamentResults/Line|place='+i['places']+'|team='+i['order']+'|groupstage='+i['groupstage']+"}}\n"
+    return txt

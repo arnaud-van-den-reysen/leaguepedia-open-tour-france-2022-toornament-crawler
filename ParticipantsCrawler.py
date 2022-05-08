@@ -1,7 +1,6 @@
 import re
 from bs4 import BeautifulSoup
 import requests
-from globalVariable import URLTEAMS
 
 def getNombrePageDeParticipant(url):
     response = requests.get(url)
@@ -16,7 +15,7 @@ def getAllParticipantLink(url,nbPage):
     for i in range(1,nbPage+1):
         response = requests.get(url+"?page="+str(i))
         soup = BeautifulSoup(response.text, 'html.parser')
-        for a in soup('a',href=re.compile("/fr/tournaments/5228116608680255488/participants/.................../")):
+        for a in soup('a',href=re.compile("/fr/tournaments/.................../participants/.................../")):
             linkOfParticipant.append(a['href'])
     return linkOfParticipant
 
@@ -47,6 +46,15 @@ def makeFileOfParticipants(data):
     f.write("{{Box|end}}\n")
     f.close()
 
-leString = getTeamNameAndPlayers(getAllParticipantLink(URLTEAMS,getNombrePageDeParticipant(URLTEAMS)))
-print(leString)
-makeFileOfParticipants(leString)
+def getParticipantsLeaguepediaFormat(url):
+    leString = getTeamNameAndPlayers(getAllParticipantLink(url,getNombrePageDeParticipant(url)))
+    txt = "{{Box|start}}\n"
+    for team in leString:
+        txt = txt+"{{TeamRoster|team="+team['teamName']+"\n"
+        txt = txt+"|seed=\n"
+        for i in team['players']:
+            txt = txt+"|{{TeamRoster/Line|player="+i+"|flag=|role=}}\n"
+        txt = txt+"}}\n"
+        txt = txt+"{{Box|break}}\n"
+    txt = txt+"{{Box|end}}\n"
+    return txt
