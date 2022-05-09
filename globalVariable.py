@@ -14,6 +14,9 @@ def getRankingURLFromInfoURL(url):
     t2 = s2.find_all(href=re.compile("/fr/tournaments/.................../stages/.................../groups/..................."))
     return "https://play.toornament.com"+t2[0]['href']
 
+def getScheduleURLFromInfoURL(url):
+    return url
+
 #URL du Round
 URLROUND = "https://play.toornament.com/fr/tournaments/5301558561649655808/stages/5301560148115054592/groups/5301560148987469957/rounds/5660935038566301696/"
 #DATE DU MATCH

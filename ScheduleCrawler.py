@@ -52,6 +52,33 @@ def makeFileMatchScheduleAndResult(data,score,time,date):
         index+=1
     f.close()
 
-leString = getMatchScheduleAndResult(URLROUND,SCORE)
-print(leString)
-makeFileMatchScheduleAndResult(leString,SCORE,TIME,DATE)
+def getScheduleLeaguepediaFormat(URLSchedule,score,time,date):
+    leString = getMatchScheduleAndResult(URLSchedule,score)
+    txt = ''
+    index = 1
+    for i in leString:
+        txt = txt + "{{MatchSchedule|date="+date+" |time="+time+" |timezone=CET |dst=spring\n"
+        if (score):
+            txt = txt + "|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n'
+            txt = txt + "|team1score= |team2score= |winner=\n"
+        else:
+            txt = txt + "|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n'
+            if(i['team1score'] == 'V'):
+                txt = txt + "|team1score=1 |team2score=0 |winner=1"
+                if(i['team2score'] == 'F'):
+                    txt = txt + " |ff=2\n"
+                else:
+                    txt = txt + "\n"
+            if(i['team2score'] == 'V'):
+                txt = txt + "|team1score=0 |team2score=1 |winner=2"
+                if(i['team1score'] == 'F'):
+                    txt = txt + " |ff=1\n"
+                else:
+                    txt = txt + "\n"
+        txt = txt + "}}\n"
+        index+=1
+    return txt
+
+#leString = getMatchScheduleAndResult(URLROUND,SCORE)
+#print(leString)
+#makeFileMatchScheduleAndResult(leString,SCORE,TIME,DATE)
