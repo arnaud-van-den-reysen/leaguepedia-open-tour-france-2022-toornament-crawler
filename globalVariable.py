@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 def getParticipantsURLFromInfoURL(url):
-    return url+"participants/"
+    return url if url.endswith("participants/") else url+"participants/"
 
 def getRankingURLFromInfoURL(url):
     response = requests.get(url)

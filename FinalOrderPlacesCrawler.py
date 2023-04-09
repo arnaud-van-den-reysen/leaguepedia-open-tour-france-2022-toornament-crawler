@@ -1,3 +1,4 @@
+import re
 from bs4 import BeautifulSoup
 import requests
 
@@ -23,7 +24,7 @@ def getOrderAndPlaces(url,nbPage):
         for j in soup.find_all('div',class_="name weighted"):
             if j.get_text() != "Nom":
                 order.append(j.get_text())
-        for j in soup.find_all('div',class_="history history-6"):#history-<n° de result>
+        for j in soup.find_all('div',class_=re.compile("history history-")):#history-<n° de result>
             if j.get_text() != "Historique    ":
                 groupstage.append(j.get_text())
     for i,j,k in zip(order,places,groupstage):

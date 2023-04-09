@@ -38,15 +38,16 @@ root.title('Leaguepedia Toornament Parser')
 
 titrePrincipal = tk.Label(root,text='Leaguepedia Toornament Parser',font=("Helvetica",24)).pack()
 
-labelURLPrincipal = tk.Label(root,text='Toornament URL :').pack()
-
-URLinfo = tk.StringVar()
-textbox = tk.Entry(root,textvariable=URLinfo).pack(fill='x')
-
 labelParticipantsSection = tk.Label(root,text='Participants',font=("Helvetica",16)).pack()
-tk.Button(root,text='Participants Parse',command=lambda: participantsSectionManager(URLinfo.get())).pack()
+labelURLParticipantsResults = tk.Label(root,text='URL Participants :').pack()
+URLinfoParticipants = tk.StringVar()
+textbox = tk.Entry(root,textvariable=URLinfoParticipants).pack(fill='x')
+tk.Button(root,text='Participants Parse',command=lambda: participantsSectionManager(URLinfoParticipants.get())).pack()
 
 labelSchedulesSection = tk.Label(root,text='Schedule',font=("Helvetica",16)).pack()
+labelURLSchedulesResults = tk.Label(root,text='URL Schedules :').pack()
+URLinfoSchedules = tk.StringVar()
+textbox = tk.Entry(root,textvariable=URLinfoSchedules).pack(fill='x')
 SCORE = tk.BooleanVar()
 DATE = tk.StringVar()
 TIME = tk.StringVar()
@@ -56,13 +57,14 @@ labelTime = tk.Label(root,text='Time :').pack()
 textbox = tk.Entry(root,textvariable=TIME).pack()
 r1 = tk.Radiobutton(root,text='Round Over',value=False,variable=SCORE).pack()
 r2 = tk.Radiobutton(root,text='Round Not Started',value=True,variable=SCORE).pack()
-tk.Button(root,text='Schedule Parse',command=lambda: scheduleSectionManager(URLinfo.get(),SCORE.get(),TIME.get(),DATE.get())).pack()
+tk.Button(root,text='Schedule Parse',command=lambda: scheduleSectionManager(URLinfoSchedules.get(),SCORE.get(),TIME.get(),DATE.get())).pack()
 
-labelFinalOrderPlacesSection = tk.Label(root,text='FinalOrderPlaces',font=("Helvetica",16)).pack()
-tk.Button(root,text='FinalOrderPlaces Parse',command=lambda: finalOrderPlacesSectionManager(URLinfo.get())).pack()
-
-labelTournamentResultsSection = tk.Label(root,text='TournamentResults',font=("Helvetica",16)).pack()
-tk.Button(root,text='TournamentResults Parse',command=lambda: tournamentResultsSectionManager(URLinfo.get())).pack()
+labelFinalOrderPlacesTournamentResultsSection = tk.Label(root,text='FinalOrderPlaces & TournamentResults',font=("Helvetica",16)).pack()
+labelURLFinalOrderPlacesTournamentResults = tk.Label(root,text='URL Swiss Group - Toutes les rondes :').pack()
+URLinfoFinalOrderPlacesTournamentResults = tk.StringVar()
+textbox = tk.Entry(root,textvariable=URLinfoFinalOrderPlacesTournamentResults).pack(fill='x')
+tk.Button(root,text='FinalOrderPlaces Parse',command=lambda: finalOrderPlacesSectionManager(URLinfoFinalOrderPlacesTournamentResults.get())).pack()
+tk.Button(root,text='TournamentResults Parse',command=lambda: tournamentResultsSectionManager(URLinfoFinalOrderPlacesTournamentResults.get())).pack()
 
 labelParsingResultSection = tk.Label(root,text='Parsing Result',font=("Helvetica",16)).pack()
 
