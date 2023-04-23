@@ -8,6 +8,9 @@ def getNombrePageDeSwissGroup(url):
     nombrePageDeParticipant = 0
     for a in soup('a',class_="page"):
         nombrePageDeParticipant+=1
+    if nombrePageDeParticipant == 0:
+        nombrePageDeParticipant = 1
+    print(nombrePageDeParticipant)
     return nombrePageDeParticipant
 
 def getOrderAndPlaces(url,nbPage):
