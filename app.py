@@ -8,9 +8,14 @@ import ScheduleCrawler as sc
 
 RESULT = ''
 
-def participantsSectionManager(url):
-    URLParticipants = gv.getParticipantsURLFromInfoURL(url)
-    RESULT = pc.getParticipantsLeaguepediaFormat(URLParticipants)
+def participantsSectionManager(urlParticip,urlTeams):
+    URLParticipants = gv.getParticipantsURLFromInfoURL(urlParticip)
+    URLFinalOrderPlaces = gv.getRankingURLFromInfoURL(urlTeams)
+    teams = fop.getOrderAndPlaces(URLFinalOrderPlaces,fop.getNombrePageDeSwissGroup(URLFinalOrderPlaces))
+    listTeams = []
+    for t in teams:
+        listTeams.append(t['order'])
+    RESULT = pc.getParticipantsLeaguepediaFormat(URLParticipants,listTeams)
     text.delete("1.0","end")
     text.insert('1.0',RESULT)
 
@@ -42,7 +47,7 @@ labelParticipantsSection = tk.Label(root,text='Participants',font=("Helvetica",1
 labelURLParticipantsResults = tk.Label(root,text='URL Participants :').pack()
 URLinfoParticipants = tk.StringVar()
 textbox = tk.Entry(root,textvariable=URLinfoParticipants).pack(fill='x')
-tk.Button(root,text='Participants Parse',command=lambda: participantsSectionManager(URLinfoParticipants.get())).pack()
+tk.Button(root,text='Participants Parse',command=lambda: participantsSectionManager(URLinfoParticipants.get(),URLinfoFinalOrderPlacesTournamentResults.get())).pack()
 
 labelSchedulesSection = tk.Label(root,text='Schedule',font=("Helvetica",16)).pack()
 labelURLSchedulesResults = tk.Label(root,text='URL Schedules :').pack()

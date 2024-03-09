@@ -10,10 +10,13 @@ def getNombrePageDeSwissGroup(url):
         nombrePageDeParticipant+=1
     if nombrePageDeParticipant == 0:
         nombrePageDeParticipant = 1
-    print(nombrePageDeParticipant)
     return nombrePageDeParticipant
 
 def getOrderAndPlaces(url,nbPage):
+    """
+    return [{'order': 'Elyandra Esport', 'places': '1', 'groupstage': 'VVDVVV'}, {'order': 'Omerix', 'places': '2', 'groupstage': 'VVVVVD'},...]
+    if not complete [{'order': 'CICADAS Gaming', 'places': '1', 'groupstage': 'V'}, {'order': 'Voltage', 'places': '1', 'groupstage': 'V'},...]
+    """
     orderAndPlaces = []
     order = []
     places = []
@@ -61,6 +64,7 @@ def getFinalOrderPlacesLeaguepediaFormat(url):
     for i in leString:
         txt = txt + i['places']+','
     txt = txt + "\n"
+    print(leString)
     return txt
 
 def makeFileTournamentResults(data):
@@ -98,5 +102,5 @@ def getTournamentResultsLeaguepediaFormat(url):
         i['groupstage'] = str(win)+" - "+str(lose)
     for i in leString:
         if(int(i['places']) > 8):
-            txt = txt + '|{{TournamentResults/Line|place='+i['places']+'|team='+i['order']+'|groupstage='+i['groupstage']+"}}\n"
+            txt = txt + '|{{TournamentResults/Line|place='+i['places']+'|team='+i['order']+'|groupstage='+i['groupstage']+"}}\n"    
     return txt

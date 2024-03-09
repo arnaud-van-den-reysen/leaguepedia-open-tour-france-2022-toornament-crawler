@@ -6,6 +6,9 @@ def getParticipantsURLFromInfoURL(url):
     return url if url.endswith("participants/") else url+"participants/"
 
 def getRankingURLFromInfoURL(url):
+    """
+    return link to the result page
+    """
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     t = soup.find_all(href=re.compile("/fr/tournaments/.................../stages/.................../"))
