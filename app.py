@@ -8,13 +8,14 @@ import ScheduleCrawler as sc
 
 RESULT = ''
 
-def participantsSectionManager(urlParticip,urlTeams):
+def participantsSectionManager(urlParticip,urlTeams=''):
     URLParticipants = gv.getParticipantsURLFromInfoURL(urlParticip)
-    URLFinalOrderPlaces = gv.getRankingURLFromInfoURL(urlTeams)
-    teams = fop.getOrderAndPlaces(URLFinalOrderPlaces,fop.getNombrePageDeSwissGroup(URLFinalOrderPlaces))
     listTeams = []
-    for t in teams:
-        listTeams.append(t['order'])
+    if urlTeams != '':
+        URLFinalOrderPlaces = gv.getRankingURLFromInfoURL(urlTeams)
+        teams = fop.getOrderAndPlaces(URLFinalOrderPlaces,fop.getNombrePageDeSwissGroup(URLFinalOrderPlaces))
+        for t in teams:
+            listTeams.append(t['order'])
     RESULT = pc.getParticipantsLeaguepediaFormat(URLParticipants,listTeams)
     text.delete("1.0","end")
     text.insert('1.0',RESULT)

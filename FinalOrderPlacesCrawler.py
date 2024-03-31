@@ -64,7 +64,6 @@ def getFinalOrderPlacesLeaguepediaFormat(url):
     for i in leString:
         txt = txt + i['places']+','
     txt = txt + "\n"
-    print(leString)
     return txt
 
 def makeFileTournamentResults(data):

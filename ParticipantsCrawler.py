@@ -22,13 +22,22 @@ def getAllParticipantLink(url,nbPage):
             linkOfParticipant.append(a['href'])
     return linkOfParticipant
 
-def getTeamNameAndPlayers(linkP,teams) : 
+def getTeamNameAndPlayers(linkP,teams='') : 
     listOfRosterTeam = []
     for i in linkP:
         response = requests.get("https://play.toornament.com"+i+"info") 
         soup = BeautifulSoup(response.text, 'html.parser')
         teamName = soup.find_all('h3',text=True)[0].get_text()
-        if(teamName in teams):
+        if teams == '':
+            if(teamName in teams):
+                players = []
+                for i in soup.find_all('div','text bold',text=True):
+                    players.append(re.sub("\n", "",i.get_text()).strip())
+                listOfRosterTeam.append(
+                    {"teamName": teamName,
+                    "players": players})
+        else:
+            print(teamName)
             players = []
             for i in soup.find_all('div','text bold',text=True):
                 players.append(re.sub("\n", "",i.get_text()).strip())
@@ -50,7 +59,7 @@ def makeFileOfParticipants(data):
     f.write("{{Box|end}}\n")
     f.close()
 
-def getParticipantsLeaguepediaFormat(url,teams):
+def getParticipantsLeaguepediaFormat(url,teams=''):
     leString = getTeamNameAndPlayers(getAllParticipantLink(url,getNombrePageDeParticipant(url)),teams)
     txt = "{{Box|start}}\n"
     for team in leString:

@@ -11,7 +11,6 @@ def getMatchScheduleAndResult(url,score):
         result = []
         for j in i.stripped_strings:
             result.append(j)
-        print(result)
         if(score):
             schedule.append(
                 {'team1': result[0],
@@ -78,7 +77,3 @@ def getScheduleLeaguepediaFormat(URLSchedule,score,time,date):
         txt = txt + "}}\n"
         index+=1
     return txt
-
-#leString = getMatchScheduleAndResult(URLROUND,SCORE)
-#print(leString)
-#makeFileMatchScheduleAndResult(leString,SCORE,TIME,DATE)
