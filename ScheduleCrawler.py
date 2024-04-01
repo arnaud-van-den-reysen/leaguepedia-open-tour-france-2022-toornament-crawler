@@ -35,15 +35,15 @@ def makeFileMatchScheduleAndResult(data,score,time,date):
             f.write("|team1score= |team2score= |winner=\n")
         else:
             f.write("|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n')
-            if(i['team1score'] == 'V'):
+            if(i['team1score'] == 'V' or i['team1score'] == 'W'):
                 f.write("|team1score=1 |team2score=0 |winner=1")
-                if(i['team2score'] == 'F'):
+                if(i['team2score'] == 'F' or i['team2score'] == 'D'):
                     f.write(" |ff=2\n")
                 else:
                     f.write("\n")
-            if(i['team2score'] == 'V'):
+            if(i['team2score'] == 'V' or i['team2score'] == 'W'):
                 f.write("|team1score=0 |team2score=1 |winner=2")
-                if(i['team1score'] == 'F'):
+                if(i['team1score'] == 'F' or i['team1score'] == 'D'):
                     f.write(" |ff=1\n")
                 else:
                     f.write("\n")
@@ -62,15 +62,15 @@ def getScheduleLeaguepediaFormat(URLSchedule,score,time,date):
             txt = txt + "|team1score= |team2score= |winner=\n"
         else:
             txt = txt + "|initialorder="+str(index)+"|team1="+i['team1']+" |team2="+i['team2']+'\n'
-            if(i['team1score'] == 'V'):
+            if(i['team1score'] == 'V' or i['team1score'] == 'W'):
                 txt = txt + "|team1score=1 |team2score=0 |winner=1"
-                if(i['team2score'] == 'F'):
+                if(i['team2score'] == 'F' or i['team2score'] == 'D'):
                     txt = txt + " |ff=2\n"
                 else:
                     txt = txt + "\n"
-            if(i['team2score'] == 'V'):
+            if(i['team2score'] == 'V' or i['team2score'] == 'W'):
                 txt = txt + "|team1score=0 |team2score=1 |winner=2"
-                if(i['team1score'] == 'F'):
+                if(i['team1score'] == 'F' or i['team1score'] == 'D'):
                     txt = txt + " |ff=1\n"
                 else:
                     txt = txt + "\n"
